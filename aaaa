@@ -1863,43 +1863,8 @@ Library:Create("Frame", {
 
 -- Find this section in the Window function and replace the Icon and Title sections:
 
--- Replace the Icon section (moved further left):
-Items["Icon"] = Library:Create("ImageLabel", {
-    Name = "\0",
-    Parent = Items["Top"].Instance,
-    ImageColor3 = Library.Theme["Accent"],
-    Size = UDim2.new(0, 55, 0, 55),
-    AnchorPoint = Vector2.new(0, 0.5),
-    Image = Window.Logo,
-    BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-    BackgroundTransparency = 1,
-    Position = UDim2.new(0, 10, 0.5, 0),
-    ZIndex = 2,
-    BorderSizePixel = 0,
-    ClipsDescendants = true
-}):AddToTheme({ImageColor3 = 'Accent'})
-do
-    local iconCorner = Instance.new("UICorner")
-    iconCorner.CornerRadius = UDim.new(1, 0)
-    iconCorner.Parent = Items["Icon"].Instance
-end
 
-Items["Glow"] = Library:Create("ImageLabel", {
-    Name = "\0",
-    Parent = Items["Icon"].Instance,
-    ImageColor3 = Library.Theme["Accent"],
-    ScaleType = Enum.ScaleType.Slice,
-    ImageTransparency = 0.6000000238418579,
-    Size = UDim2.new(1, 20, 1, 20),
-    AnchorPoint = Vector2.new(0.5, 0.5),
-    Image = "http://www.roblox.com/asset/?id=18245826428",
-    BackgroundTransparency = 1,
-    Position = UDim2.new(0.5, 0, 0.5, 0),
-    BorderSizePixel = 0,
-    SliceCenter = Rect.new(Vector2.new(21, 21), Vector2.new(79, 79))
-}):AddToTheme({ImageColor3 = 'Accent'})
-
--- Replace Title (moved to be right next to the icon):
+-- Replace Title (moved to icon position):
 Items["Title"] = Library:Create("TextLabel", {
     Name = "\0",
     FontFace = Library.Font,
@@ -1910,7 +1875,7 @@ Items["Title"] = Library:Create("TextLabel", {
     AnchorPoint = Vector2.new(0, 0.5),
     Size = UDim2.new(0, 0, 0, 30),
     BackgroundTransparency = 1,
-    Position = UDim2.new(0, 65, 0.5, -8),  -- Changed from 80 to 65 (closer to icon)
+    Position = UDim2.new(0, 10, 0.5, 0),
     BorderSizePixel = 0,
     AutomaticSize = Enum.AutomaticSize.X,
     TextXAlignment = Enum.TextXAlignment.Left
@@ -1927,7 +1892,7 @@ Items["SubTitle"] = Library:Create("TextLabel", {
     AnchorPoint = Vector2.new(0, 0.5),
     Size = UDim2.new(0, 0, 0, 20),
     BackgroundTransparency = 1,
-    Position = UDim2.new(0, 67, 0.5, 12),  -- Changed from 82 to 67
+    Position = UDim2.new(0, 10, 0.5, 20),
     BorderSizePixel = 0,
     AutomaticSize = Enum.AutomaticSize.X,
     TextXAlignment = Enum.TextXAlignment.Left
