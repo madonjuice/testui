@@ -675,7 +675,7 @@ local Library = {
 
     Library.Round = function(Self, Number, Float)
         local Multiplier = 1 / (Float or 1)
-        return math.floor(Number * Multiplier) / Multiplier
+        return math.round(Number * Multiplier) / Multiplier
     end
 
     Library.GetConfig = function(Self)
@@ -2212,7 +2212,7 @@ end)
                 end
             end)
 
-            Library:Connect(RunService.RenderStepped, function()
+            Library:Connect(RunService.Heartbeat, function()
                 if Window.IsOpen then
                     Library:GlobalUpdateOpenFrames()
                 end
