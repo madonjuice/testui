@@ -2170,6 +2170,41 @@ end)
                 for Index, Value in Library.OpenFrames do 
                     Value:SetOpen(false)
                 end
+
+                if Bool then
+                    if Window._FloatingButton then
+                        pcall(function() Window._FloatingButton:Destroy() end)
+                        Window._FloatingButton = nil
+                    end
+                else
+                    if not Window._FloatingButton then
+                        local btn = Instance.new("TextButton")
+                        btn.Name = "AeroReopen"
+                        btn.Text = "AERO"
+                        btn.Font = Enum.Font.GothamBold
+                        btn.TextSize = 14
+                        btn.TextColor3 = Color3.fromRGB(230, 230, 245)
+                        btn.BackgroundColor3 = Color3.fromRGB(18, 20, 26)
+                        btn.Size = UDim2.new(0, 60, 0, 60)
+                        btn.Position = UDim2.new(1, -75, 0, 15)
+                        btn.AnchorPoint = Vector2.new(0, 0)
+                        btn.BorderSizePixel = 0
+                        btn.ZIndex = 100000
+                        btn.AutoButtonColor = false
+                        btn.Parent = Library.Holder.Instance
+                        local corner = Instance.new("UICorner")
+                        corner.CornerRadius = UDim.new(1, 0)
+                        corner.Parent = btn
+                        local stroke = Instance.new("UIStroke")
+                        stroke.Color = Color3.fromRGB(50, 140, 255)
+                        stroke.Thickness = 2
+                        stroke.Parent = btn
+                        btn.MouseButton1Click:Connect(function()
+                            Window:SetOpen(true)
+                        end)
+                        Window._FloatingButton = btn
+                    end
+                end
             end
 
             function Window:Center()
