@@ -14,7 +14,7 @@ function lib:CreateWindow(title)
 	local Line_2 = Instance.new("Frame")
 	local ContentContainer = Instance.new("Frame")
 	local ExitButton = Instance.new("ImageButton")
-	local MobileCard = Instance.new("ImageButton")
+	local MobileCard = Instance.new("TextButton")
 	local UICorner_Mobile = Instance.new("UICorner")
 
 	UI.Name = "KairoUI"
@@ -31,7 +31,7 @@ function lib:CreateWindow(title)
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
 
 	MainAspect.Parent = Main
-	MainAspect.AspectRatio = 1.45
+	MainAspect.AspectRatio = 1.25
 	MainAspect.AspectType = Enum.AspectType.FitWithinMaxSize
 	MainAspect.DominantAxis = Enum.DominantAxis.Width
 
@@ -70,22 +70,23 @@ function lib:CreateWindow(title)
 		Main.Visible = false
 	end)
 
-	local MinimizeButton = Instance.new("TextButton")
-	local UICorner_Min = Instance.new("UICorner")
+	local MinimizeButton = Instance.new("ImageButton")
+	local MinimizeLine = Instance.new("Frame")
 
 	MinimizeButton.Name = "MinimizeButton"
 	MinimizeButton.Parent = TopBar
 	MinimizeButton.BackgroundTransparency = 1.000
 	MinimizeButton.Position = UDim2.new(1, -75, 0.5, -15)
 	MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-	MinimizeButton.Font = Enum.Font.GothamBold
-	MinimizeButton.Text = "-"
-	MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-	MinimizeButton.TextSize = 20.000
-	MinimizeButton.TextTransparency = 0.5
 
-	UICorner_Min.CornerRadius = UDim.new(0, 6)
-	UICorner_Min.Parent = MinimizeButton
+	MinimizeLine.Name = "Line"
+	MinimizeLine.Parent = MinimizeButton
+	MinimizeLine.AnchorPoint = Vector2.new(0.5, 0.5)
+	MinimizeLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	MinimizeLine.BackgroundTransparency = 0.5
+	MinimizeLine.BorderSizePixel = 0
+	MinimizeLine.Position = UDim2.new(0.5, 0, 0.5, 0)
+	MinimizeLine.Size = UDim2.new(0, 14, 0, 2)
 
 	MinimizeButton.MouseButton1Click:Connect(function()
 		Main.Visible = false
