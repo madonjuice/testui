@@ -30,7 +30,7 @@ function lib:CreateWindow(title)
 	local UserInputService = game:GetService("UserInputService")
 
 	if UserInputService.TouchEnabled then
-		Main.Size = UDim2.new(0.80, 0, 0.80, 0)
+		Main.Size = UDim2.new(0.92, 0, 0.92, 0)
 	else
 		Main.Size = UDim2.new(0.54, 0, 0.54, 0)
 	end
@@ -118,7 +118,7 @@ function lib:CreateWindow(title)
 	Navigation.Active = true
 	Navigation.BackgroundTransparency = 1.000
 	Navigation.Position = UDim2.new(0, 0, 0, 51)
-	local NavWidth = UserInputService.TouchEnabled and 110 or 150
+	local NavWidth = UserInputService.TouchEnabled and 100 or 150
 	Navigation.Size = UDim2.new(0, NavWidth, 1, -51)
 	Navigation.ScrollBarThickness = 0
 
