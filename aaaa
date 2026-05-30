@@ -14,7 +14,7 @@ function lib:CreateWindow(title)
 	local Line_2 = Instance.new("Frame")
 	local ContentContainer = Instance.new("Frame")
 	local ExitButton = Instance.new("ImageButton")
-	local MobileCard = Instance.new("ImageButton")
+		local MobileCard = Instance.new("TextButton")
 	local UICorner_Mobile = Instance.new("UICorner")
 
 	UI.Name = "KairoUI"
@@ -27,7 +27,7 @@ function lib:CreateWindow(title)
 	Main.Parent = UI
 	Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Main.Size = UDim2.new(0.65, 0, 0.65, 0)
+	Main.Size = UDim2.new(0.5, 0, 0.5, 0)
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
 
 	MainAspect.Parent = Main
@@ -67,6 +67,25 @@ function lib:CreateWindow(title)
 		Main.Visible = false
 	end)
 	ExitButton.TouchTap:Connect(function()
+		Main.Visible = false
+	end)
+
+	local MinimizeButton = Instance.new("TextButton")
+	MinimizeButton.Name = "MinimizeButton"
+	MinimizeButton.Parent = TopBar
+	MinimizeButton.BackgroundTransparency = 1.000
+	MinimizeButton.Position = UDim2.new(1, -75, 0.5, -15)
+	MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+	MinimizeButton.Font = Enum.Font.GothamBold
+	MinimizeButton.Text = "-"
+	MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	MinimizeButton.TextSize = 24
+	MinimizeButton.TextTransparency = 0.5
+
+	MinimizeButton.MouseButton1Click:Connect(function()
+		Main.Visible = false
+	end)
+	MinimizeButton.TouchTap:Connect(function()
 		Main.Visible = false
 	end)
 
@@ -110,16 +129,28 @@ function lib:CreateWindow(title)
 
 	MobileCard.Name = "MobileCard"
 	MobileCard.Parent = UI
-	MobileCard.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+	MobileCard.BackgroundColor3 = Color3.fromRGB(80, 80, 255)
 	MobileCard.BorderSizePixel = 0
-	MobileCard.Position = UDim2.new(0.05, 0, 0.05, 0)
-	MobileCard.Size = UDim2.new(0, 50, 0, 50)
+	MobileCard.Position = UDim2.new(0, 36, 0, 208)
+	MobileCard.Size = UDim2.new(0, 48, 0, 48)
 	MobileCard.AutoButtonColor = false
-	MobileCard.Image = "rbxassetid://10709790644"
-	MobileCard.ImageTransparency = 0.3
+	MobileCard.Font = Enum.Font.GothamBold
+	MobileCard.Text = "AERO"
+	MobileCard.TextColor3 = Color3.fromRGB(255, 255, 255)
+	MobileCard.TextSize = 10
 
-	UICorner_Mobile.CornerRadius = UDim.new(0, 10)
+	local Stroke = Instance.new("UIStroke")
+	Stroke.Color = Color3.fromRGB(100, 100, 255)
+	Stroke.Thickness = 1.5
+	Stroke.Transparency = 0.5
+	Stroke.Parent = MobileCard
+
+	UICorner_Mobile.CornerRadius = UDim.new(1, 0)
 	UICorner_Mobile.Parent = MobileCard
+
+	local UserInputService = game:GetService("UserInputService")
+	local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+	MobileCard.Visible = isMobile
 
 	MobileCard.MouseButton1Click:Connect(function()
 		Main.Visible = not Main.Visible
@@ -566,6 +597,7 @@ function lib:CreateWindow(title)
 
 		local currentValue = default
 		local isDragging = false
+		local dragConnection
 
 		local function updateSlider()
 			local pct = math.clamp((currentValue - min) / (max - min), 0, 1)
@@ -575,35 +607,41 @@ function lib:CreateWindow(title)
 			if callback then callback(currentValue) end
 		end
 
-		local function processInput(input)
+		local function updateFromCursor()
 			local trackX = TrackBack.AbsolutePosition.X
 			local trackW = TrackBack.AbsoluteSize.X
-			local pct = math.clamp((input.Position.X - trackX) / trackW, 0, 1)
+			local cursorX = UserInputService:GetMouseLocation().X
+			local pct = math.clamp((cursorX - trackX) / trackW, 0, 1)
 			currentValue = math.floor(min + pct * (max - min))
 			updateSlider()
 		end
 
-		Button.MouseButton1Down:Connect(function()
-			isDragging = true
-		end)
-		Button.TouchLongPress:Connect(function()
-			isDragging = true
-		end)
-
-		UserInputService.InputChanged:Connect(function(input)
-			if isDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-				processInput(input)
+		Button.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				isDragging = true
+				if dragConnection then dragConnection:Disconnect() end
+				dragConnection = game:GetService("RunService").RenderStepped:Connect(function()
+					if isDragging then
+						updateFromCursor()
+					else
+						if dragConnection then
+							dragConnection:Disconnect()
+							dragConnection = nil
+						end
+					end
+				end)
+				updateFromCursor()
 			end
 		end)
 
 		UserInputService.InputEnded:Connect(function(input)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 				isDragging = false
+				if dragConnection then
+					dragConnection:Disconnect()
+					dragConnection = nil
+				end
 			end
-		end)
-
-		Button.MouseButton1Click:Connect(function()
-			processInput({Position = Vector3.new(UserInputService:GetMouseLocation().X, 0, 0)})
 		end)
 
 		currentValue = default
