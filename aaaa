@@ -31,7 +31,7 @@ function lib:CreateWindow(title)
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
 
 	MainAspect.Parent = Main
-	MainAspect.AspectRatio = 1.25
+	MainAspect.AspectRatio = 1.15
 	MainAspect.AspectType = Enum.AspectType.FitWithinMaxSize
 	MainAspect.DominantAxis = Enum.DominantAxis.Width
 
@@ -90,6 +90,16 @@ function lib:CreateWindow(title)
 
 	MinimizeButton.MouseButton1Click:Connect(function()
 		Main.Visible = false
+		local UserInputService = game:GetService("UserInputService")
+		if not UserInputService.TouchEnabled then
+			pcall(function()
+				game:GetService("StarterGui"):SetCore("SendNotification", {
+					Title = "UI Minimized",
+					Text = "Press Right Shift to reopen.",
+					Duration = 3
+				})
+			end)
+		end
 	end)
 	MinimizeButton.TouchTap:Connect(function()
 		Main.Visible = false
@@ -150,7 +160,7 @@ function lib:CreateWindow(title)
 
 	local UserInputService = game:GetService("UserInputService")
 	
-	MinimizeButton.Visible = UserInputService.TouchEnabled
+	MinimizeButton.Visible = true
 	MobileCard.Visible = false
 
 	Main:GetPropertyChangedSignal("Visible"):Connect(function()
@@ -202,7 +212,7 @@ function lib:CreateWindow(title)
 	end)
 
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
-		if not gameProcessed and input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.LeftControl then
+		if not gameProcessed and input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.RightShift then
 			Main.Visible = not Main.Visible
 		end
 	end)
