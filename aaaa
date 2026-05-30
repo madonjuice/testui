@@ -90,7 +90,8 @@ function lib:CreateWindow(title)
 
 	MinimizeButton.MouseButton1Click:Connect(function()
 		Main.Visible = false
-		if lib.OnMinimize then
+		local UserInputService = game:GetService("UserInputService")
+		if not UserInputService.TouchEnabled and lib.OnMinimize then
 			pcall(lib.OnMinimize)
 		end
 	end)
@@ -161,9 +162,6 @@ function lib:CreateWindow(title)
 			MobileCard.Visible = false
 		else
 			MobileCard.Visible = UserInputService.TouchEnabled
-			if not UserInputService.TouchEnabled and lib.OnMinimize then
-				pcall(lib.OnMinimize)
-			end
 		end
 	end)
 
@@ -210,6 +208,12 @@ function lib:CreateWindow(title)
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.RightShift then
 			Main.Visible = not Main.Visible
+			if not Main.Visible then
+				local UserInputService = game:GetService("UserInputService")
+				if not UserInputService.TouchEnabled and lib.OnMinimize then
+					pcall(lib.OnMinimize)
+				end
+			end
 		end
 	end)
 
