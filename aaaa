@@ -27,24 +27,19 @@ function lib:CreateWindow(title)
 	Main.Parent = UI
 	Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Main.AnchorPoint = Vector2.new(0.5, 0.5)
-
 	local UserInputService = game:GetService("UserInputService")
 
 	if UserInputService.TouchEnabled then
-		Main.Size = UDim2.new(0.95, 0, 0.9, 0)
+		Main.Size = UDim2.new(0.80, 0, 0.80, 0)
 	else
 		Main.Size = UDim2.new(0.54, 0, 0.54, 0)
 	end
+	Main.AnchorPoint = Vector2.new(0.5, 0.5)
 
 	MainAspect.Parent = Main
 	MainAspect.AspectRatio = 1.1
 	MainAspect.AspectType = Enum.AspectType.FitWithinMaxSize
 	MainAspect.DominantAxis = Enum.DominantAxis.Width
-
-	if UserInputService.TouchEnabled then
-		MainAspect.Enabled = false
-	end
 
 	UICorner.CornerRadius = UDim.new(0, 8)
 	UICorner.Parent = Main
@@ -123,7 +118,8 @@ function lib:CreateWindow(title)
 	Navigation.Active = true
 	Navigation.BackgroundTransparency = 1.000
 	Navigation.Position = UDim2.new(0, 0, 0, 51)
-	Navigation.Size = UDim2.new(0, 150, 1, -51)
+	local NavWidth = UserInputService.TouchEnabled and 110 or 150
+	Navigation.Size = UDim2.new(0, NavWidth, 1, -51)
 	Navigation.ScrollBarThickness = 0
 
 	UIListLayout.Parent = Navigation
@@ -139,14 +135,14 @@ function lib:CreateWindow(title)
 	Line_2.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
 	Line_2.BackgroundTransparency = 0.500
 	Line_2.BorderSizePixel = 0
-	Line_2.Position = UDim2.new(0, 150, 0, 51)
+	Line_2.Position = UDim2.new(0, NavWidth, 0, 51)
 	Line_2.Size = UDim2.new(0, 1, 1, -51)
 
 	ContentContainer.Name = "ContentContainer"
 	ContentContainer.Parent = Main
 	ContentContainer.BackgroundTransparency = 1.000
-	ContentContainer.Position = UDim2.new(0, 151, 0, 51)
-	ContentContainer.Size = UDim2.new(1, -151, 1, -51)
+	ContentContainer.Position = UDim2.new(0, NavWidth + 1, 0, 51)
+	ContentContainer.Size = UDim2.new(1, -(NavWidth + 1), 1, -51)
 
 	MobileCard.Name = "MobileCard"
 	MobileCard.Parent = UI
