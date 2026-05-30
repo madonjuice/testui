@@ -27,13 +27,24 @@ function lib:CreateWindow(title)
 	Main.Parent = UI
 	Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Main.Size = UDim2.new(0.54, 0, 0.54, 0)
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
+
+	local UserInputService = game:GetService("UserInputService")
+
+	if UserInputService.TouchEnabled then
+		Main.Size = UDim2.new(0.95, 0, 0.9, 0)
+	else
+		Main.Size = UDim2.new(0.54, 0, 0.54, 0)
+	end
 
 	MainAspect.Parent = Main
 	MainAspect.AspectRatio = 1.1
 	MainAspect.AspectType = Enum.AspectType.FitWithinMaxSize
 	MainAspect.DominantAxis = Enum.DominantAxis.Width
+
+	if UserInputService.TouchEnabled then
+		MainAspect.Enabled = false
+	end
 
 	UICorner.CornerRadius = UDim.new(0, 8)
 	UICorner.Parent = Main
