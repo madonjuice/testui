@@ -27,13 +27,7 @@ function lib:CreateWindow(title)
 	Main.Parent = UI
 	Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
-	local UserInputService = game:GetService("UserInputService")
-
-	if UserInputService.TouchEnabled then
-		Main.Size = UDim2.new(0.92, 0, 0.92, 0)
-	else
-		Main.Size = UDim2.new(0.54, 0, 0.54, 0)
-	end
+	Main.Size = UDim2.new(0.54, 0, 0.54, 0)
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
 
 	MainAspect.Parent = Main
@@ -118,8 +112,7 @@ function lib:CreateWindow(title)
 	Navigation.Active = true
 	Navigation.BackgroundTransparency = 1.000
 	Navigation.Position = UDim2.new(0, 0, 0, 51)
-	local NavWidth = UserInputService.TouchEnabled and 100 or 150
-	Navigation.Size = UDim2.new(0, NavWidth, 1, -51)
+	Navigation.Size = UDim2.new(0, 150, 1, -51)
 	Navigation.ScrollBarThickness = 0
 
 	UIListLayout.Parent = Navigation
@@ -135,14 +128,14 @@ function lib:CreateWindow(title)
 	Line_2.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
 	Line_2.BackgroundTransparency = 0.500
 	Line_2.BorderSizePixel = 0
-	Line_2.Position = UDim2.new(0, NavWidth, 0, 51)
+	Line_2.Position = UDim2.new(0, 150, 0, 51)
 	Line_2.Size = UDim2.new(0, 1, 1, -51)
 
 	ContentContainer.Name = "ContentContainer"
 	ContentContainer.Parent = Main
 	ContentContainer.BackgroundTransparency = 1.000
-	ContentContainer.Position = UDim2.new(0, NavWidth + 1, 0, 51)
-	ContentContainer.Size = UDim2.new(1, -(NavWidth + 1), 1, -51)
+	ContentContainer.Position = UDim2.new(0, 151, 0, 51)
+	ContentContainer.Size = UDim2.new(1, -151, 1, -51)
 
 	MobileCard.Name = "MobileCard"
 	MobileCard.Parent = UI
@@ -462,8 +455,9 @@ function lib:CreateWindow(title)
 
 		local active = false
 
-		Button.MouseButton1Click:Connect(function()
-			active = not active
+		local ToggleObject = {}
+		function ToggleObject:Set(state)
+			active = state
 			if active then
 				TweenService:Create(Indicator, TweenInfo.new(0.2), {Position = UDim2.new(1, -18, 0.5, 0), BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
 				TweenService:Create(Pill, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(80, 80, 255)}):Play()
@@ -474,7 +468,16 @@ function lib:CreateWindow(title)
 				TweenService:Create(TitleLabel, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(200, 200, 200)}):Play()
 			end
 			callback(active)
+		end
+		
+		function ToggleObject:Get()
+			return active
+		end
+
+		Button.MouseButton1Click:Connect(function()
+			ToggleObject:Set(not active)
 		end)
+		return ToggleObject
 	end
 
 	function lib:CreateButton(title, ParentCanvas, callback)
@@ -651,6 +654,17 @@ function lib:CreateWindow(title)
 
 		currentValue = default
 		updateSlider()
+
+		local SliderObject = {}
+		function SliderObject:Set(val)
+			currentValue = math.clamp(val, min, max)
+			updateSlider()
+		end
+		
+		function SliderObject:Get()
+			return currentValue
+		end
+		return SliderObject
 	end
 
 	function lib:CreateDropdown(title, ParentCanvas, options, callback)
@@ -786,6 +800,66 @@ function lib:CreateWindow(title)
 				task.delay(0.2, function() OptionHolder.Visible = false end)
 			end
 		end)
+
+		local DropdownObject = {}
+		function DropdownObject:Set(value)
+			SelectedLabel.Text = value
+			if callback then callback(value) end
+		end
+		
+		function DropdownObject:Get()
+			return SelectedLabel.Text
+		end
+
+		function DropdownObject:Refresh(newOptions, newCallback)
+			for _, child in ipairs(OptionHolder:GetChildren()) do
+				if child:IsA("TextButton") then
+					child:Destroy()
+				end
+			end
+			if newCallback then callback = newCallback end
+			options = newOptions
+
+			for _, opt in ipairs(options) do
+				local OptBtn = Instance.new("TextButton")
+				local UICorner_Opt = Instance.new("UICorner")
+
+				OptBtn.Name = opt
+				OptBtn.Parent = OptionHolder
+				OptBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+				OptBtn.BorderSizePixel = 0
+				OptBtn.Size = UDim2.new(0.95, 0, 0, 32)
+				OptBtn.Font = Enum.Font.GothamMedium
+				OptBtn.Text = opt
+				OptBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+				OptBtn.TextSize = 13
+				OptBtn.ZIndex = 25
+
+				UICorner_Opt.CornerRadius = UDim.new(0, 4)
+				UICorner_Opt.Parent = OptBtn
+
+				OptBtn.MouseButton1Click:Connect(function()
+					SelectedLabel.Text = opt
+					isOpen = false
+					OptionHolder.Visible = false
+					TweenService:Create(ArrowLabel, TweenInfo.new(0.2), {Rotation = 0}):Play()
+					if callback then callback(opt) end
+				end)
+
+				OptBtn.MouseEnter:Connect(function()
+					TweenService:Create(OptBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(30, 30, 45)}):Play()
+					TweenService:Create(OptBtn, TweenInfo.new(0.1), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+				end)
+				OptBtn.MouseLeave:Connect(function()
+					TweenService:Create(OptBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(22, 22, 22)}):Play()
+					TweenService:Create(OptBtn, TweenInfo.new(0.1), {TextColor3 = Color3.fromRGB(200, 200, 200)}):Play()
+				end)
+			end
+			totalHeight = #options * 34 + 4
+			SelectedLabel.Text = options[1] or ""
+		end
+
+		return DropdownObject
 	end
 
 	function lib:CreateInput(title, ParentCanvas, placeholder, callback)
@@ -842,6 +916,17 @@ function lib:CreateWindow(title)
 				callback(InputBox.Text)
 			end
 		end)
+
+		local InputObject = {}
+		function InputObject:Set(value)
+			InputBox.Text = value
+			if callback then callback(value) end
+		end
+		
+		function InputObject:Get()
+			return InputBox.Text
+		end
+		return InputObject
 	end
 
 	function lib:CreateLabel(title, ParentCanvas)
