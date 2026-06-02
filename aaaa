@@ -912,7 +912,7 @@ function lib:CreateWindow(title)
 
 		InputBox.FocusLost:Connect(function(enterPressed)
 			TweenService:Create(InputBox, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(22, 22, 22)}):Play()
-			if enterPressed and callback then
+			if callback then
 				callback(InputBox.Text)
 			end
 		end)
