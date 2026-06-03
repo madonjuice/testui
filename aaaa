@@ -32,7 +32,7 @@ function lib:CreateWindow(title)
 	local IsMobile = UserInputService.TouchEnabled
 	local NavWidth = IsMobile and 120 or 150
 	if UserInputService.TouchEnabled then
-		Main.Size = UDim2.new(0.92, 0, 0.88, 0)
+		Main.Size = UDim2.new(0.78, 0, 0.85, 0)
 	else
 		Main.Size = UDim2.new(0.54, 0, 0.54, 0)
 	end
