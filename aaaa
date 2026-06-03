@@ -29,18 +29,17 @@ function lib:CreateWindow(title)
 	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
 	
 	local UserInputService = game:GetService("UserInputService")
+	local IsMobile = UserInputService.TouchEnabled
+	local NavWidth = IsMobile and 120 or 150
 	if UserInputService.TouchEnabled then
-		Main.Size = UDim2.new(0.62, 0, 0.62, 0)
+		Main.Size = UDim2.new(0.92, 0, 0.88, 0)
 	else
 		Main.Size = UDim2.new(0.54, 0, 0.54, 0)
 	end
 	
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
 
-	MainAspect.Parent = Main
-	MainAspect.AspectRatio = 1.1
-	MainAspect.AspectType = Enum.AspectType.FitWithinMaxSize
-	MainAspect.DominantAxis = Enum.DominantAxis.Width
+
 
 	UICorner.CornerRadius = UDim.new(0, 8)
 	UICorner.Parent = Main
@@ -59,7 +58,7 @@ function lib:CreateWindow(title)
 	Title.Font = Enum.Font.GothamBold
 	Title.Text = title
 	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Title.TextSize = 18.000
+	Title.TextSize = IsMobile and 22 or 18
 	Title.TextXAlignment = Enum.TextXAlignment.Left
 
 	ExitButton.Name = "ExitButton"
@@ -119,7 +118,7 @@ function lib:CreateWindow(title)
 	Navigation.Active = true
 	Navigation.BackgroundTransparency = 1.000
 	Navigation.Position = UDim2.new(0, 0, 0, 51)
-	Navigation.Size = UDim2.new(0, 150, 1, -51)
+	Navigation.Size = UDim2.new(0, NavWidth, 1, -51)
 	Navigation.ScrollBarThickness = 0
 
 	UIListLayout.Parent = Navigation
@@ -135,26 +134,26 @@ function lib:CreateWindow(title)
 	Line_2.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
 	Line_2.BackgroundTransparency = 0.500
 	Line_2.BorderSizePixel = 0
-	Line_2.Position = UDim2.new(0, 150, 0, 51)
+	Line_2.Position = UDim2.new(0, NavWidth, 0, 51)
 	Line_2.Size = UDim2.new(0, 1, 1, -51)
 
 	ContentContainer.Name = "ContentContainer"
 	ContentContainer.Parent = Main
 	ContentContainer.BackgroundTransparency = 1.000
-	ContentContainer.Position = UDim2.new(0, 151, 0, 51)
-	ContentContainer.Size = UDim2.new(1, -151, 1, -51)
+	ContentContainer.Position = UDim2.new(0, NavWidth + 1, 0, 51)
+	ContentContainer.Size = UDim2.new(1, -(NavWidth + 1), 1, -51)
 
 	MobileCard.Name = "MobileCard"
 	MobileCard.Parent = UI
 	MobileCard.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 	MobileCard.BorderSizePixel = 0
 	MobileCard.Position = UDim2.new(0.05, 0, 0.05, 0)
-	MobileCard.Size = UDim2.new(0, 80, 0, 35)
+	MobileCard.Size = UDim2.new(0, 120, 0, 50)
 	MobileCard.AutoButtonColor = false
 	MobileCard.Text = "Aero"
 	MobileCard.TextColor3 = Color3.fromRGB(255, 255, 255)
 	MobileCard.Font = Enum.Font.GothamBold
-	MobileCard.TextSize = 14
+	MobileCard.TextSize = 18
 
 	UICorner_Mobile.CornerRadius = UDim.new(0, 8)
 	UICorner_Mobile.Parent = MobileCard
@@ -262,7 +261,7 @@ function lib:CreateWindow(title)
 		TabBtn.Parent = Navigation
 		TabBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 		TabBtn.BackgroundTransparency = 1.000
-		TabBtn.Size = UDim2.new(0.9, 0, 0, 35)
+		TabBtn.Size = UDim2.new(0.9, 0, 0, IsMobile and 45 or 35)
 		TabBtn.Font = Enum.Font.GothamMedium
 		TabBtn.Text = "   " .. title
 		TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
