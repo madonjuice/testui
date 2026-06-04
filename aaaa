@@ -4,7 +4,6 @@ function lib:CreateWindow(title)
 	local UI = Instance.new("ScreenGui")
 	local Main = Instance.new("Frame")
 	local UICorner = Instance.new("UICorner")
-	local MainAspect = Instance.new("UIAspectRatioConstraint")
 	local TopBar = Instance.new("Frame")
 	local Title = Instance.new("TextLabel")
 	local Line = Instance.new("Frame")
@@ -22,6 +21,7 @@ function lib:CreateWindow(title)
 	UI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	UI.DisplayOrder = 999999999
 	UI.ResetOnSpawn = false
+	UI.IgnoreGuiInset = true
 
 	Main.Name = "Main"
 	Main.Parent = UI
@@ -30,9 +30,10 @@ function lib:CreateWindow(title)
 	
 	local UserInputService = game:GetService("UserInputService")
 	local IsMobile = UserInputService.TouchEnabled
-	local NavWidth = IsMobile and 120 or 150
+	local NavWidth = IsMobile and 100 or 150
+	local TopBarHeight = IsMobile and 40 or 50
 	if UserInputService.TouchEnabled then
-		Main.Size = UDim2.new(0.78, 0, 0.85, 0)
+		Main.Size = UDim2.new(0.92, 0, 0.6, 0)
 	else
 		Main.Size = UDim2.new(0.54, 0, 0.54, 0)
 	end
@@ -48,7 +49,7 @@ function lib:CreateWindow(title)
 	TopBar.Parent = Main
 	TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	TopBar.BackgroundTransparency = 1.000
-	TopBar.Size = UDim2.new(1, 0, 0, 50)
+	TopBar.Size = UDim2.new(1, 0, 0, TopBarHeight)
 
 	Title.Name = "Title"
 	Title.Parent = TopBar
@@ -58,14 +59,14 @@ function lib:CreateWindow(title)
 	Title.Font = Enum.Font.GothamBold
 	Title.Text = title
 	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Title.TextSize = IsMobile and 22 or 18
+	Title.TextSize = IsMobile and 16 or 18
 	Title.TextXAlignment = Enum.TextXAlignment.Left
 
 	ExitButton.Name = "ExitButton"
 	ExitButton.Parent = TopBar
 	ExitButton.BackgroundTransparency = 1.000
-	ExitButton.Position = UDim2.new(1, -40, 0.5, -15)
-	ExitButton.Size = UDim2.new(0, 30, 0, 30)
+	ExitButton.Position = UDim2.new(1, -40, 0.5, -(IsMobile and 12 or 15))
+	ExitButton.Size = UDim2.new(0, IsMobile and 24 or 30, 0, IsMobile and 24 or 30)
 	ExitButton.Image = "rbxassetid://10747384394"
 	ExitButton.ImageTransparency = 0.5
 
@@ -82,8 +83,8 @@ function lib:CreateWindow(title)
 	MinimizeButton.Name = "MinimizeButton"
 	MinimizeButton.Parent = TopBar
 	MinimizeButton.BackgroundTransparency = 1.000
-	MinimizeButton.Position = UDim2.new(1, -75, 0.5, -15)
-	MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+	MinimizeButton.Position = UDim2.new(1, -(IsMobile and 65 or 75), 0.5, -(IsMobile and 12 or 15))
+	MinimizeButton.Size = UDim2.new(0, IsMobile and 24 or 30, 0, IsMobile and 24 or 30)
 
 	MinimizeLine.Name = "Line"
 	MinimizeLine.Parent = MinimizeButton
@@ -110,16 +111,17 @@ function lib:CreateWindow(title)
 	Line.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
 	Line.BackgroundTransparency = 0.500
 	Line.BorderSizePixel = 0
-	Line.Position = UDim2.new(0, 0, 0, 50)
+	Line.Position = UDim2.new(0, 0, 0, TopBarHeight)
 	Line.Size = UDim2.new(1, 0, 0, 1)
 
 	Navigation.Name = "Navigation"
 	Navigation.Parent = Main
 	Navigation.Active = true
 	Navigation.BackgroundTransparency = 1.000
-	Navigation.Position = UDim2.new(0, 0, 0, 51)
-	Navigation.Size = UDim2.new(0, NavWidth, 1, -51)
+	Navigation.Position = UDim2.new(0, 0, 0, TopBarHeight + 1)
+	Navigation.Size = UDim2.new(0, NavWidth, 1, -(TopBarHeight + 1))
 	Navigation.ScrollBarThickness = 0
+	Navigation.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 	UIListLayout.Parent = Navigation
 	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -134,14 +136,14 @@ function lib:CreateWindow(title)
 	Line_2.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
 	Line_2.BackgroundTransparency = 0.500
 	Line_2.BorderSizePixel = 0
-	Line_2.Position = UDim2.new(0, NavWidth, 0, 51)
-	Line_2.Size = UDim2.new(0, 1, 1, -51)
+	Line_2.Position = UDim2.new(0, NavWidth, 0, TopBarHeight + 1)
+	Line_2.Size = UDim2.new(0, 1, 1, -(TopBarHeight + 1))
 
 	ContentContainer.Name = "ContentContainer"
 	ContentContainer.Parent = Main
 	ContentContainer.BackgroundTransparency = 1.000
-	ContentContainer.Position = UDim2.new(0, NavWidth + 1, 0, 51)
-	ContentContainer.Size = UDim2.new(1, -(NavWidth + 1), 1, -51)
+	ContentContainer.Position = UDim2.new(0, NavWidth + 1, 0, TopBarHeight + 1)
+	ContentContainer.Size = UDim2.new(1, -(NavWidth + 1), 1, -(TopBarHeight + 1))
 
 	MobileCard.Name = "MobileCard"
 	MobileCard.Parent = UI
@@ -261,11 +263,11 @@ function lib:CreateWindow(title)
 		TabBtn.Parent = Navigation
 		TabBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 		TabBtn.BackgroundTransparency = 1.000
-		TabBtn.Size = UDim2.new(0.9, 0, 0, IsMobile and 45 or 35)
+		TabBtn.Size = UDim2.new(0.9, 0, 0, IsMobile and 34 or 35)
 		TabBtn.Font = Enum.Font.GothamMedium
 		TabBtn.Text = "   " .. title
 		TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-		TabBtn.TextSize = 14.000
+		TabBtn.TextSize = IsMobile and 12 or 14
 		TabBtn.TextTransparency = 0.5
 		TabBtn.TextXAlignment = Enum.TextXAlignment.Left
 		TabBtn.AutoButtonColor = false
@@ -292,7 +294,7 @@ function lib:CreateWindow(title)
 		SubTabBar.Name = "SubTabBar"
 		SubTabBar.Parent = TabFrame
 		SubTabBar.BackgroundTransparency = 1
-		SubTabBar.Size = UDim2.new(1, 0, 0, 35)
+		SubTabBar.Size = UDim2.new(1, 0, 0, IsMobile and 30 or 35)
 		SubTabBar.ScrollBarThickness = 0
 		SubTabBar.CanvasSize = UDim2.new(2, 0, 0, 0)
 
@@ -308,8 +310,8 @@ function lib:CreateWindow(title)
 		ElementsContainer.Name = "ElementsContainer"
 		ElementsContainer.Parent = TabFrame
 		ElementsContainer.BackgroundTransparency = 1
-		ElementsContainer.Position = UDim2.new(0, 0, 0, 40)
-		ElementsContainer.Size = UDim2.new(1, 0, 1, -40)
+		ElementsContainer.Position = UDim2.new(0, 0, 0, IsMobile and 32 or 40)
+		ElementsContainer.Size = UDim2.new(1, 0, 1, -(IsMobile and 32 or 40))
 
 		table.insert(tabs, {Button = TabBtn, Frame = TabFrame, Icon = Icon})
 
@@ -361,8 +363,9 @@ function lib:CreateWindow(title)
 			SubCanvas.Name = subTitle .. "_Canvas"
 			SubCanvas.Parent = self.Container
 			SubCanvas.BackgroundTransparency = 1
-			SubCanvas.Size = UDim2.new(1, 0, 1, 0)
+				SubCanvas.Size = UDim2.new(1, 0, 1, 0)
 			SubCanvas.ScrollBarThickness = 0
+			SubCanvas.AutomaticCanvasSize = Enum.AutomaticSize.Y
 			SubCanvas.Visible = false
 
 			SubList.Parent = SubCanvas
@@ -419,7 +422,7 @@ function lib:CreateWindow(title)
 		ToggleFrame.Name = "Toggle"
 		ToggleFrame.Parent = ParentCanvas
 		ToggleFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		ToggleFrame.Size = UDim2.new(0.95, 0, 0, 45)
+		ToggleFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 38 or 45)
 
 		UICorner_Toggle.CornerRadius = UDim.new(0, 6)
 		UICorner_Toggle.Parent = ToggleFrame
@@ -427,19 +430,19 @@ function lib:CreateWindow(title)
 		TitleLabel.Name = "Title"
 		TitleLabel.Parent = ToggleFrame
 		TitleLabel.BackgroundTransparency = 1.000
-		TitleLabel.Position = UDim2.new(0, 15, 0, 0)
+		TitleLabel.Position = UDim2.new(0, 10, 0, 0)
 		TitleLabel.Size = UDim2.new(0.7, 0, 1, 0)
 		TitleLabel.Font = Enum.Font.GothamMedium
 		TitleLabel.Text = title
 		TitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-		TitleLabel.TextSize = 14.000
+		TitleLabel.TextSize = IsMobile and 12 or 14
 		TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 		Pill.Name = "Pill"
 		Pill.Parent = ToggleFrame
 		Pill.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-		Pill.Position = UDim2.new(1, -55, 0.5, -10)
-		Pill.Size = UDim2.new(0, 40, 0, 20)
+		Pill.Position = UDim2.new(1, -(IsMobile and 48 or 55), 0.5, -(IsMobile and 8 or 10))
+		Pill.Size = UDim2.new(0, IsMobile and 34 or 40, 0, IsMobile and 16 or 20)
 
 		PillCorner.CornerRadius = UDim.new(1, 0)
 		PillCorner.Parent = Pill
@@ -448,7 +451,7 @@ function lib:CreateWindow(title)
 		Indicator.Parent = Pill
 		Indicator.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
 		Indicator.Position = UDim2.new(0, 2, 0.5, 0)
-		Indicator.Size = UDim2.new(0, 16, 0, 16)
+		Indicator.Size = UDim2.new(0, IsMobile and 12 or 16, 0, IsMobile and 12 or 16)
 		Indicator.AnchorPoint = Vector2.new(0, 0.5)
 
 		IndicatorCorner.CornerRadius = UDim.new(1, 0)
@@ -495,7 +498,7 @@ function lib:CreateWindow(title)
 		ButtonFrame.Name = "Button"
 		ButtonFrame.Parent = ParentCanvas
 		ButtonFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		ButtonFrame.Size = UDim2.new(0.95, 0, 0, 45)
+		ButtonFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 38 or 45)
 
 		UICorner_Btn.CornerRadius = UDim.new(0, 6)
 		UICorner_Btn.Parent = ButtonFrame
@@ -503,12 +506,12 @@ function lib:CreateWindow(title)
 		TitleLabel.Name = "Title"
 		TitleLabel.Parent = ButtonFrame
 		TitleLabel.BackgroundTransparency = 1
-		TitleLabel.Position = UDim2.new(0, 15, 0, 0)
+		TitleLabel.Position = UDim2.new(0, 10, 0, 0)
 		TitleLabel.Size = UDim2.new(0.85, 0, 1, 0)
 		TitleLabel.Font = Enum.Font.GothamMedium
 		TitleLabel.Text = title
 		TitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-		TitleLabel.TextSize = 14
+		TitleLabel.TextSize = IsMobile and 12 or 14
 		TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 		local ArrowLabel = Instance.new("TextLabel")
@@ -556,7 +559,7 @@ function lib:CreateWindow(title)
 		SliderFrame.Name = "Slider"
 		SliderFrame.Parent = ParentCanvas
 		SliderFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		SliderFrame.Size = UDim2.new(0.95, 0, 0, 55)
+		SliderFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 48 or 55)
 
 		UICorner_Sld.CornerRadius = UDim.new(0, 6)
 		UICorner_Sld.Parent = SliderFrame
@@ -564,12 +567,12 @@ function lib:CreateWindow(title)
 		TitleLabel.Name = "Title"
 		TitleLabel.Parent = SliderFrame
 		TitleLabel.BackgroundTransparency = 1
-		TitleLabel.Position = UDim2.new(0, 15, 0, 0)
-		TitleLabel.Size = UDim2.new(0.6, 0, 0, 28)
+		TitleLabel.Position = UDim2.new(0, 10, 0, 0)
+		TitleLabel.Size = UDim2.new(0.6, 0, 0, IsMobile and 24 or 28)
 		TitleLabel.Font = Enum.Font.GothamMedium
 		TitleLabel.Text = title
 		TitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-		TitleLabel.TextSize = 14
+		TitleLabel.TextSize = IsMobile and 12 or 14
 		TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 		ValueLabel.Name = "Value"
@@ -587,8 +590,8 @@ function lib:CreateWindow(title)
 		TrackBack.Parent = SliderFrame
 		TrackBack.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 		TrackBack.BorderSizePixel = 0
-		TrackBack.Position = UDim2.new(0, 15, 0, 38)
-		TrackBack.Size = UDim2.new(1, -30, 0, 4)
+		TrackBack.Position = UDim2.new(0, 10, 0, IsMobile and 30 or 38)
+		TrackBack.Size = UDim2.new(1, -20, 0, 4)
 
 		UICorner_Track.CornerRadius = UDim.new(1, 0)
 		UICorner_Track.Parent = TrackBack
@@ -687,7 +690,7 @@ function lib:CreateWindow(title)
 		DropFrame.Name = "Dropdown"
 		DropFrame.Parent = ParentCanvas
 		DropFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		DropFrame.Size = UDim2.new(0.95, 0, 0, 45)
+		DropFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 38 or 45)
 		DropFrame.ClipsDescendants = false
 		DropFrame.ZIndex = 10
 
@@ -878,7 +881,7 @@ function lib:CreateWindow(title)
 		InputFrame.Name = "Input"
 		InputFrame.Parent = ParentCanvas
 		InputFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		InputFrame.Size = UDim2.new(0.95, 0, 0, 45)
+		InputFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 38 or 45)
 
 		UICorner_Inp.CornerRadius = UDim.new(0, 6)
 		UICorner_Inp.Parent = InputFrame
@@ -886,12 +889,12 @@ function lib:CreateWindow(title)
 		TitleLabel.Name = "Title"
 		TitleLabel.Parent = InputFrame
 		TitleLabel.BackgroundTransparency = 1
-		TitleLabel.Position = UDim2.new(0, 15, 0, 0)
+		TitleLabel.Position = UDim2.new(0, 10, 0, 0)
 		TitleLabel.Size = UDim2.new(0.45, 0, 1, 0)
 		TitleLabel.Font = Enum.Font.GothamMedium
 		TitleLabel.Text = title
 		TitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-		TitleLabel.TextSize = 14
+		TitleLabel.TextSize = IsMobile and 12 or 14
 		TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 		InputBox.Name = "InputBox"
@@ -943,7 +946,7 @@ function lib:CreateWindow(title)
 		LabelFrame.Name = "Label"
 		LabelFrame.Parent = ParentCanvas
 		LabelFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		LabelFrame.Size = UDim2.new(0.95, 0, 0, 35)
+		LabelFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 30 or 35)
 
 		UICorner_Lbl.CornerRadius = UDim.new(0, 6)
 		UICorner_Lbl.Parent = LabelFrame
