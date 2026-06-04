@@ -30,11 +30,10 @@ function lib:CreateWindow(title)
 	
 	local UserInputService = game:GetService("UserInputService")
 	local IsMobile = UserInputService.TouchEnabled
-	local NavWidth = IsMobile and 0 or 150
+	local NavWidth = IsMobile and 90 or 150
 	local TopBarHeight = IsMobile and 36 or 50
-	local MobileNavHeight = 36
 	if UserInputService.TouchEnabled then
-		Main.Size = UDim2.new(0.95, 0, 0.7, 0)
+		Main.Size = UDim2.new(0.55, 0, 0.85, 0)
 	else
 		Main.Size = UDim2.new(0.54, 0, 0.54, 0)
 	end
@@ -120,66 +119,31 @@ function lib:CreateWindow(title)
 	Navigation.Active = true
 	Navigation.BackgroundTransparency = 1.000
 	Navigation.ScrollBarThickness = 0
-
-	if IsMobile then
-		Navigation.Position = UDim2.new(0, 0, 0, TopBarHeight + 1)
-		Navigation.Size = UDim2.new(1, 0, 0, MobileNavHeight)
-		Navigation.AutomaticCanvasSize = Enum.AutomaticSize.X
-		Navigation.CanvasSize = UDim2.new(0, 0, 0, 0)
-	else
-		Navigation.Position = UDim2.new(0, 0, 0, TopBarHeight + 1)
-		Navigation.Size = UDim2.new(0, NavWidth, 1, -(TopBarHeight + 1))
-		Navigation.AutomaticCanvasSize = Enum.AutomaticSize.Y
-	end
+	Navigation.Position = UDim2.new(0, 0, 0, TopBarHeight + 1)
+	Navigation.Size = UDim2.new(0, NavWidth, 1, -(TopBarHeight + 1))
+	Navigation.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 	UIListLayout.Parent = Navigation
+	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-	if IsMobile then
-		UIListLayout.FillDirection = Enum.FillDirection.Horizontal
-		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-		UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-		UIListLayout.Padding = UDim.new(0, 4)
-	else
-		UIListLayout.FillDirection = Enum.FillDirection.Vertical
-		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-		UIListLayout.Padding = UDim.new(0, 5)
-	end
+	UIListLayout.Padding = UDim.new(0, IsMobile and 3 or 5)
 
 	UIPadding.Parent = Navigation
-	if IsMobile then
-		UIPadding.PaddingTop = UDim.new(0, 4)
-		UIPadding.PaddingLeft = UDim.new(0, 8)
-	else
-		UIPadding.PaddingTop = UDim.new(0, 10)
-	end
+	UIPadding.PaddingTop = UDim.new(0, IsMobile and 6 or 10)
 
 	Line_2.Name = "Line"
 	Line_2.Parent = Main
 	Line_2.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
 	Line_2.BackgroundTransparency = 0.500
 	Line_2.BorderSizePixel = 0
-
-	if IsMobile then
-		Line_2.Visible = false
-		Line_2.Position = UDim2.new(0, 0, 0, 0)
-		Line_2.Size = UDim2.new(0, 0, 0, 0)
-	else
-		Line_2.Position = UDim2.new(0, NavWidth, 0, TopBarHeight + 1)
-		Line_2.Size = UDim2.new(0, 1, 1, -(TopBarHeight + 1))
-	end
+	Line_2.Position = UDim2.new(0, NavWidth, 0, TopBarHeight + 1)
+	Line_2.Size = UDim2.new(0, 1, 1, -(TopBarHeight + 1))
 
 	ContentContainer.Name = "ContentContainer"
 	ContentContainer.Parent = Main
 	ContentContainer.BackgroundTransparency = 1.000
-
-	if IsMobile then
-		ContentContainer.Position = UDim2.new(0, 0, 0, TopBarHeight + 1 + MobileNavHeight + 1)
-		ContentContainer.Size = UDim2.new(1, 0, 1, -(TopBarHeight + 1 + MobileNavHeight + 1))
-	else
-		ContentContainer.Position = UDim2.new(0, NavWidth + 1, 0, TopBarHeight + 1)
-		ContentContainer.Size = UDim2.new(1, -(NavWidth + 1), 1, -(TopBarHeight + 1))
-	end
+	ContentContainer.Position = UDim2.new(0, NavWidth + 1, 0, TopBarHeight + 1)
+	ContentContainer.Size = UDim2.new(1, -(NavWidth + 1), 1, -(TopBarHeight + 1))
 
 	MobileCard.Name = "MobileCard"
 	MobileCard.Parent = UI
@@ -299,23 +263,14 @@ function lib:CreateWindow(title)
 		TabBtn.Parent = Navigation
 		TabBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 		TabBtn.BackgroundTransparency = 1.000
+		TabBtn.Size = UDim2.new(0.9, 0, 0, IsMobile and 30 or 35)
 		TabBtn.Font = Enum.Font.GothamMedium
+		TabBtn.Text = "   " .. title
 		TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+		TabBtn.TextSize = IsMobile and 11 or 14
 		TabBtn.TextTransparency = 0.5
+		TabBtn.TextXAlignment = Enum.TextXAlignment.Left
 		TabBtn.AutoButtonColor = false
-
-		if IsMobile then
-			TabBtn.Size = UDim2.new(0, 0, 0, 28)
-			TabBtn.AutomaticSize = Enum.AutomaticSize.X
-			TabBtn.TextSize = 12
-			TabBtn.TextXAlignment = Enum.TextXAlignment.Center
-			TabBtn.Text = "  " .. title .. "  "
-		else
-			TabBtn.Size = UDim2.new(0.9, 0, 0, 35)
-			TabBtn.TextSize = 14
-			TabBtn.TextXAlignment = Enum.TextXAlignment.Left
-			TabBtn.Text = "   " .. title
-		end
 
 		UICorner_Tab.CornerRadius = UDim.new(0, 6)
 		UICorner_Tab.Parent = TabBtn
@@ -323,16 +278,11 @@ function lib:CreateWindow(title)
 		if iconId then
 			Icon.Parent = TabBtn
 			Icon.BackgroundTransparency = 1.000
+			Icon.Position = UDim2.new(0, IsMobile and 6 or 10, 0.5, -8)
 			Icon.Size = UDim2.new(0, IsMobile and 14 or 16, 0, IsMobile and 14 or 16)
 			Icon.Image = iconId
 			Icon.ImageTransparency = 0.5
-			if IsMobile then
-				Icon.Position = UDim2.new(0, 6, 0.5, -7)
-				TabBtn.Text = "       " .. title .. "  "
-			else
-				Icon.Position = UDim2.new(0, 10, 0.5, -8)
-				TabBtn.Text = "         " .. title
-			end
+			TabBtn.Text = "         " .. title
 		end
 
 		TabFrame.Name = title .. "_Frame"
