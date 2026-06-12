@@ -26,7 +26,7 @@ function lib:CreateWindow(title)
 	Main.Name = "Main"
 	Main.Parent = UI
 	Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-	Main.BackgroundTransparency = 0.15
+	Main.BackgroundTransparency = 0.08
 	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
 	
 	local UserInputService = game:GetService("UserInputService")
@@ -149,7 +149,7 @@ function lib:CreateWindow(title)
 	MobileCard.Name = "MobileCard"
 	MobileCard.Parent = UI
 	MobileCard.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-	MobileCard.BackgroundTransparency = 0.15
+	MobileCard.BackgroundTransparency = 0.08
 	MobileCard.BorderSizePixel = 0
 	MobileCard.Position = UDim2.new(0.05, 0, 0.05, 0)
 	MobileCard.Size = UDim2.new(0, 120, 0, 50)
@@ -424,7 +424,7 @@ function lib:CreateWindow(title)
 		ToggleFrame.Name = "Toggle"
 		ToggleFrame.Parent = ParentCanvas
 		ToggleFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		ToggleFrame.BackgroundTransparency = 0.3
+		ToggleFrame.BackgroundTransparency = 0.15
 		ToggleFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 40 or 45)
 
 		UICorner_Toggle.CornerRadius = UDim.new(0, 6)
@@ -501,7 +501,7 @@ function lib:CreateWindow(title)
 		ButtonFrame.Name = "Button"
 		ButtonFrame.Parent = ParentCanvas
 		ButtonFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		ButtonFrame.BackgroundTransparency = 0.3
+		ButtonFrame.BackgroundTransparency = 0.15
 		ButtonFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 40 or 45)
 
 		UICorner_Btn.CornerRadius = UDim.new(0, 6)
@@ -563,7 +563,7 @@ function lib:CreateWindow(title)
 		SliderFrame.Name = "Slider"
 		SliderFrame.Parent = ParentCanvas
 		SliderFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		SliderFrame.BackgroundTransparency = 0.3
+		SliderFrame.BackgroundTransparency = 0.15
 		SliderFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 50 or 55)
 
 		UICorner_Sld.CornerRadius = UDim.new(0, 6)
@@ -695,7 +695,7 @@ function lib:CreateWindow(title)
 		DropFrame.Name = "Dropdown"
 		DropFrame.Parent = ParentCanvas
 		DropFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		DropFrame.BackgroundTransparency = 0.3
+		DropFrame.BackgroundTransparency = 0.15
 		DropFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 40 or 45)
 		DropFrame.ClipsDescendants = false
 		DropFrame.ZIndex = 10
@@ -887,7 +887,7 @@ function lib:CreateWindow(title)
 		InputFrame.Name = "Input"
 		InputFrame.Parent = ParentCanvas
 		InputFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		InputFrame.BackgroundTransparency = 0.3
+		InputFrame.BackgroundTransparency = 0.15
 		InputFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 40 or 45)
 
 		UICorner_Inp.CornerRadius = UDim.new(0, 6)
@@ -953,7 +953,7 @@ function lib:CreateWindow(title)
 		LabelFrame.Name = "Label"
 		LabelFrame.Parent = ParentCanvas
 		LabelFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		LabelFrame.BackgroundTransparency = 0.3
+		LabelFrame.BackgroundTransparency = 0.15
 		LabelFrame.Size = UDim2.new(0.95, 0, 0, IsMobile and 32 or 35)
 
 		UICorner_Lbl.CornerRadius = UDim.new(0, 6)
