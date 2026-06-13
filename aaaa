@@ -634,7 +634,7 @@ function lib:CreateWindow(title)
 			local pct = customPct or math.clamp((currentValue - min) / (max - min), 0, 1)
 			Fill.Size = UDim2.new(pct, 0, 1, 0)
 			Handle.Position = UDim2.new(pct, 0, 0.5, 0)
-			local displayValue = math.floor(currentValue)
+			local displayValue = math.floor(currentValue * 10 + 0.5) / 10
 			ValueLabel.Text = tostring(displayValue)
 			if callback then callback(displayValue) end
 		end
